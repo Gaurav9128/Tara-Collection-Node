@@ -2,8 +2,8 @@ import axios from 'axios';
 import crypto from 'crypto';
 import { v4 as uuidv4 } from 'uuid';
  
-const MERCHANT_KEY = "88186875-58c6-4313-a000-1e640b3db251";
-const MERCHANT_ID = "PGTESTPAYUAT85";
+const MERCHANT_KEY = "b4650abc-8e26-4130-ae97-42af3ae2b2ae";
+const MERCHANT_ID = "M22KT8OP23RUM";
  
 const MERCHANT_BASE_URL = "https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/pay";
 const MERCHANT_STATUS_URL = "https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/status";
