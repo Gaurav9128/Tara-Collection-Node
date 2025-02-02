@@ -5,8 +5,8 @@ import { v4 as uuidv4 } from 'uuid';
 const MERCHANT_KEY = "b4650abc-8e26-4130-ae97-42af3ae2b2ae";
 const MERCHANT_ID = "M22KT8OP23RUM";
  
-const MERCHANT_BASE_URL = "https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/pay";
-const MERCHANT_STATUS_URL = "https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/status";
+const MERCHANT_BASE_URL = "https://api.phonepe.com/apis/hermes/pg/v1/pay";
+const MERCHANT_STATUS_URL = "https://api.phonepe.com/apis/hermes/pg/v1/status/";
  
 const redirectUrl = "http://localhost:4000/status";
 const successUrl = "http://localhost:5173/payment-success";
@@ -40,6 +40,7 @@ export const createOrder = async (req, res) => {
         const string = payload + '/pg/v1/pay' + MERCHANT_KEY;
         const sha256 = crypto.createHash('sha256').update(string).digest('hex');
         const checksum = sha256 + '###' + keyIndex;
+     
  
         const options = {
             method: 'POST',
