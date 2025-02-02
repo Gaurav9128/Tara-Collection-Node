@@ -9,8 +9,8 @@ const MERCHANT_BASE_URL = "https://api.phonepe.com/apis/hermes/pg/v1/pay";
 const MERCHANT_STATUS_URL = "https://api.phonepe.com/apis/hermes/pg/v1/status/";
  
 const redirectUrl = "http://localhost:4000/status";
-const successUrl = "http://localhost:5173/payment-success";
-const failureUrl = "http://localhost:5173/payment-failure";
+const successUrl = "http://localhost:5173/success";
+const failureUrl = "http://localhost:5173/failure";
  
 // Create Order and Initiate Payment
 export const createOrder = async (req, res) => {
