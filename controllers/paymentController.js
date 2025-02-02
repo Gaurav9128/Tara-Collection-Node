@@ -27,7 +27,7 @@ export const createOrder = async (req, res) => {
             mobileNumber: mobileNumber,
             amount: amount * 100,
             merchantTransactionId: orderId,
-            redirectUrl: `${redirectUrl}/?id=${orderId}`,
+            redirectUrl: `http://localhost:5000/api/status/${merchantTransactionId}`,
             redirectMode: 'POST',
             paymentInstrument: {
                 type: 'PAY_PAGE'
