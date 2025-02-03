@@ -86,7 +86,8 @@ export const checkPaymentStatus = async (req, res) => {
         };
  
         // CHECK PAYMENT TATUS
-    axios.request(options).then(async(response) => {
+    const response = await axios.request(options);
+        
         if (response.data.success === true) {
             const url = `http://localhost:5173/success`
             return res.redirect(url)
@@ -94,7 +95,7 @@ export const checkPaymentStatus = async (req, res) => {
             const url = `http://localhost:5173/failure`
             return res.redirect(url)
         }
-     catch (error) {
+    } catch (error) {
         console.error("Error checking payment status:", error);
         res.status(500).json({ error: 'Failed to check payment status' });
     }
