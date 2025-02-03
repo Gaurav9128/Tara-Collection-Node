@@ -94,7 +94,7 @@ export const checkPaymentStatus = async (req, res) => {
             const url = `http://localhost:5173/failure`
             return res.redirect(url)
         }
-    } catch (error) {
+     catch (error) {
         console.error("Error checking payment status:", error);
         res.status(500).json({ error: 'Failed to check payment status' });
     }
