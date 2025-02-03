@@ -8,9 +8,9 @@ const MERCHANT_ID = "M22KT8OP23RUM";
 const MERCHANT_BASE_URL = "https://api.phonepe.com/apis/hermes/pg/v1/pay";
 const MERCHANT_STATUS_URL = "https://api.phonepe.com/apis/hermes/pg/v1/status/";
  
-const redirectUrl = "http://localhost:5000/api/status";
-const successUrl = "http://localhost:5173/success";
-const failureUrl = "http://localhost:5173/failure";
+const redirectUrl = "http://localhost:5000/api/status/${merchantTransactionId}";
+// const successUrl = "http://localhost:5173/success";
+// const failureUrl = "http://localhost:5173/failure";
  
 // Create Order and Initiate Payment
 export const createOrder = async (req, res) => {
@@ -76,7 +76,7 @@ export const checkPaymentStatus = async (req, res) => {
  
         const options = {
             method: 'GET',
-            url: `${MERCHANT_STATUS_URL}/${MERCHANT_ID}/${merchantTransactionId}`,
+            url: `https://api.phonepe.com/apis/hermes/pg/v1/status/${merchantId}/${merchantTransactionId}`,
             headers: {
                 accept: 'application/json',
                 'Content-Type': 'application/json',
@@ -85,12 +85,14 @@ export const checkPaymentStatus = async (req, res) => {
             }
         };
  
-        const response = await axios.request(options);
-        
+        // CHECK PAYMENT TATUS
+    axios.request(options).then(async(response) => {
         if (response.data.success === true) {
-            return res.redirect(successUrl);
+            const url = `http://localhost:5173/success`
+            return res.redirect(url)
         } else {
-            return res.redirect(failureUrl);
+            const url = `http://localhost:5173/failure`
+            return res.redirect(url)
         }
     } catch (error) {
         console.error("Error checking payment status:", error);
