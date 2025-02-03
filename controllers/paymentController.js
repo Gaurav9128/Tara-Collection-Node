@@ -9,8 +9,8 @@ const MERCHANT_BASE_URL = "https://api.phonepe.com/apis/hermes/pg/v1/pay";
 const MERCHANT_STATUS_URL = "https://api.phonepe.com/apis/hermes/pg/v1/status/";
  
 const redirectUrl = "http://localhost:5000/status";
-// const successUrl = "http://localhost:5173/success";
-// const failureUrl = "http://localhost:5173/failure";
+const successUrl = "http://localhost:5173/success";
+const failureUrl = "http://localhost:5173/failure";
  
 // Create Order and Initiate Payment
 export const createOrder = async (req, res) => {
@@ -88,13 +88,11 @@ export const checkPaymentStatus = async (req, res) => {
         // CHECK PAYMENT TATUS
     const response = await axios.request(options);
         
-        if (response.data.success === true) {
-            const url = `http://localhost:5173/success`
-            return res.redirect(url)
-        } else {
-            const url = `http://localhost:5173/failure`
-            return res.redirect(url)
-        }
+    if (response.data.success === true) {
+        return res.redirect(successUrl);
+    } else {
+        return res.redirect(failureUrl);
+    }
     } catch (error) {
         console.error("Error checking payment status:", error);
         res.status(500).json({ error: 'Failed to check payment status' });
