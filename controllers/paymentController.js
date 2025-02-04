@@ -23,7 +23,8 @@ export const placeOrder = async (req, res) => {
         const date = Date.now();
 
         // Save order in MongoDB
-        const newOrder = new Order({
+        const newOrder = new orderModel({
+
             userId,
             items,
             amount,
@@ -102,10 +103,10 @@ export const checkPaymentStatus = async (req, res) => {
         const response = await axios.request(options);
         
         if (response.data.success === true) {
-            await Order.findOneAndUpdate({ orderId: merchantTransactionId }, { status: "SUCCESS", payment: true });
+            await orderModel.findOneAndUpdate({ orderId: merchantTransactionId }, { status: "SUCCESS", payment: true });
             return res.redirect(successUrl);
         } else {
-            await Order.findOneAndUpdate({ orderId: merchantTransactionId }, { status: "FAILED" });
+            await orderModel.findOneAndUpdate({ orderId: merchantTransactionId }, { status: "FAILED" });
             return res.redirect(failureUrl);
         }
     } catch (error) {
