@@ -16,7 +16,7 @@ const failureUrl = "http://localhost:5173/failure";
 // Create Order and Initiate Payment
 export const placeOrder = async (req, res) => {
     try {
-        const { userId, items, firstName, lastName, phone, amount, address, paymentMethod } = req.body;
+        const {  items, firstName, lastName, phone, amount, address, paymentMethod } = req.body;
         const name = firstName + ' ' + lastName;
         const mobileNumber = phone;
         const orderId = uuidv4();
@@ -25,7 +25,7 @@ export const placeOrder = async (req, res) => {
         // Save order in MongoDB
         const newOrder = new orderModel({
 
-            userId,
+            //userId,
             items,
             amount,
             address,
