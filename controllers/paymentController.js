@@ -1,7 +1,7 @@
 import axios from 'axios';
 import crypto from 'crypto';
 import { v4 as uuidv4 } from 'uuid';
-import Order from '../models/Order.js'; // Importing Order model
+import orderModel from "../models/orderModel.js"; // Importing Order model
 
 const MERCHANT_KEY = "b4650abc-8e26-4130-ae97-42af3ae2b2ae";
 const MERCHANT_ID = "M22KT8OP23RUM";
