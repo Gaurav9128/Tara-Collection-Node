@@ -9,7 +9,7 @@ const MERCHANT_ID = "M22KT8OP23RUM";
 const MERCHANT_BASE_URL = "https://api.phonepe.com/apis/hermes/pg/v1/pay";
 const MERCHANT_STATUS_URL = "https://api.phonepe.com/apis/hermes/pg/v1/status/";
 
-const redirectUrl = "http://localhost:5000/status";
+const redirectUrl = "https://taracollection.in/orders";
 const successUrl = "http://localhost:5173/success";
 const failureUrl = "http://localhost:5173/failure";
 
