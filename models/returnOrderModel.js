@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
  
 const returnOrderSchema = new mongoose.Schema({
-    choice: { type: String, enum: ["refund", "replacement"], required: true }, // Ensuring it's either 'refund' or 'replacement'
+    choice: { type: String, enum: ["refund", "Exchange"], required: true }, // Ensuring it's either 'refund' or 'replacement'
     orderId: { type: mongoose.Schema.Types.ObjectId, ref: "Order", required: true },
     productId: { type: mongoose.Schema.Types.ObjectId, ref: "Product", required: true },
     reason: { type: String, required: true },
