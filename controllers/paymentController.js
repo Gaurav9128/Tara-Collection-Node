@@ -41,6 +41,7 @@ export const createOrder = async (req, res) => {
             items,
             address,
             amount,
+            orderId,
             paymentMethod: "PhonePe",
             payment: false,
             date: Date.now()
