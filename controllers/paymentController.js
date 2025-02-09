@@ -9,11 +9,10 @@ const MERCHANT_ID = "M22KT8OP23RUM";
 const MERCHANT_BASE_URL = "https://api.phonepe.com/apis/hermes/pg/v1/pay";
 const MERCHANT_STATUS_URL = "https://api.phonepe.com/apis/hermes/pg/v1/status/";
 
-const redirectUrl = "http://localhost:4000/status";
+const redirectUrl = "https://your-ngrok-url/status";
 const successUrl = "http://localhost:5173/payment-success";
 const failureUrl = "http://localhost:5173/payment-failure";
 
-// Create Order and Initiate Payment
 export const createOrder = async (req, res) => {
     try {
         const { firstName, lastName, phone, amount, userId, items, address } = req.body;
@@ -29,9 +28,12 @@ export const createOrder = async (req, res) => {
         const mobileNumber = phone;
         const orderId = uuidv4();
 
-        // Order Data to be saved in MongoDB
+        // Convert amount to paise
+        const amountInPaise = Number(amount) * 100;
+
+        // Save order in DB before initiating payment
         const orderData = {
-            orderId, // Include orderId
+            orderId,
             userId,
             items,
             address,
@@ -42,15 +44,15 @@ export const createOrder = async (req, res) => {
         };
 
         const newOrder = new orderModel(orderData);
-        await newOrder.save(); // Save order in the database
+        await newOrder.save();
 
         // Payment Payload
         const paymentPayload = {
             merchantId: MERCHANT_ID,
             merchantUserId: userId, // Use userId instead of name
             mobileNumber: mobileNumber,
-            amount: amount * 100,
-            merchantTransactionId: orderId, // Use the same orderId
+            amount: amountInPaise, // Ensure amount is in paise
+            merchantTransactionId: orderId,
             redirectUrl: `${redirectUrl}/?id=${orderId}`,
             redirectMode: 'POST',
             paymentInstrument: {
@@ -58,12 +60,14 @@ export const createOrder = async (req, res) => {
             }
         };
 
+        // Generate Checksum
         const payload = Buffer.from(JSON.stringify(paymentPayload)).toString('base64');
         const keyIndex = 1;
-        const string = payload + '/pg/v1/pay' + MERCHANT_KEY;
+        const string = payload + "/pg/v1/pay" + MERCHANT_KEY;
         const sha256 = crypto.createHash('sha256').update(string).digest('hex');
         const checksum = sha256 + '###' + keyIndex;
 
+        // Send API Request
         const options = {
             method: 'POST',
             url: MERCHANT_BASE_URL,
@@ -80,12 +84,11 @@ export const createOrder = async (req, res) => {
 
         res.status(200).json({ msg: "OK", url: response.data.data.instrumentResponse.redirectInfo.url });
     } catch (error) {
-        console.error("Error in payment:", error);
+        console.error("Error in payment:", error.response?.data || error.message);
         res.status(500).json({ error: 'Failed to initiate payment' });
     }
 };
 
-// Check Payment Status
 export const checkPaymentStatus = async (req, res) => {
     try {
         const merchantTransactionId = req.query.id;
@@ -118,7 +121,7 @@ export const checkPaymentStatus = async (req, res) => {
             return res.redirect(failureUrl);
         }
     } catch (error) {
-        console.error("Error checking payment status:", error);
+        console.error("Error checking payment status:", error.response?.data || error.message);
         res.status(500).json({ error: 'Failed to check payment status' });
     }
 };
