@@ -83,13 +83,13 @@ export const checkPaymentStatus = async (req, res) => {
     try {
         const merchantTransactionId = req.query.id;
         const keyIndex = 1;
-        const string = /pg/v1/status/${MERCHANT_ID}/${merchantTransactionId} + MERCHANT_KEY;
+       const string = `/pg/v1/status/${MERCHANT_ID}/${merchantTransactionId}` + MERCHANT_KEY;
         const sha256 = crypto.createHash('sha256').update(string).digest('hex');
         const checksum = sha256 + '###' + keyIndex;
  
         const options = {
             method: 'GET',
-            url: ${MERCHANT_STATUS_URL}/${MERCHANT_ID}/${merchantTransactionId},
+            url: `${MERCHANT_STATUS_URL}/${MERCHANT_ID}/${merchantTransactionId}`,
             headers: {
                 accept: 'application/json',
                 'Content-Type': 'application/json',
