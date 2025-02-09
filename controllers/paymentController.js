@@ -1,8 +1,7 @@
 import axios from 'axios';
 import crypto from 'crypto';
 import { v4 as uuidv4 } from 'uuid';
-import orderModel from "../models/orderModel.js";
-
+import orderModel from '../models/orderModel';
  
 const MERCHANT_KEY = "b4650abc-8e26-4130-ae97-42af3ae2b2ae";
 const MERCHANT_ID = "M22KT8OP23RUM";
@@ -29,7 +28,7 @@ export const createOrder = async (req, res) => {
             mobileNumber: mobileNumber,
             amount: amount * 100,
             merchantTransactionId: orderId,
-            redirectUrl: ${redirectUrl}/?id=${orderId},
+            redirectUrl: `${redirectUrl}/?id=${orderId}`,
             redirectMode: 'POST',
             paymentInstrument: {
                 type: 'PAY_PAGE'
@@ -84,13 +83,13 @@ export const checkPaymentStatus = async (req, res) => {
     try {
         const merchantTransactionId = req.query.id;
         const keyIndex = 1;
-        const string = /pg/v1/status/${MERCHANT_ID}/${merchantTransactionId} + MERCHANT_KEY;
+        const string = `/pg/v1/status/${MERCHANT_ID}/${merchantTransactionId}` + MERCHANT_KEY;
         const sha256 = crypto.createHash('sha256').update(string).digest('hex');
         const checksum = sha256 + '###' + keyIndex;
  
         const options = {
             method: 'GET',
-            url: ${MERCHANT_STATUS_URL}/${MERCHANT_ID}/${merchantTransactionId},
+            url: `${MERCHANT_STATUS_URL}/${MERCHANT_ID}/${merchantTransactionId}`,
             headers: {
                 accept: 'application/json',
                 'Content-Type': 'application/json',
