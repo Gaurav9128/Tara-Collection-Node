@@ -17,18 +17,11 @@ const failureUrl = "http://localhost:5173/payment-failure";
 // Create Order and Initiate Payment
 export const createOrder = async (req, res) => {
     try {
-        console.log("Received request body:", req.body); // Debugging line
-        
-        const { firstName, lastName, phone, amount, userId, items, address } = req.body;
-        
-        if (!userId) {
-            return res.status(400).json({ error: "User ID is required" });
-        }
-
+        const { firstName, lastName, phone, amount,userId, items, address} = req.body;
         const name = firstName + ' ' + lastName;
         const mobileNumber = phone;
         const orderId = uuidv4();
-
+ 
         // Payment Payload
         const paymentPayload = {
             merchantId: MERCHANT_ID,
@@ -36,38 +29,33 @@ export const createOrder = async (req, res) => {
             mobileNumber: mobileNumber,
             amount: amount * 100,
             merchantTransactionId: orderId,
-            redirectUrl: `${redirectUrl}/?id=${orderId}`,
+            redirectUrl: ${redirectUrl}/?id=${orderId},
             redirectMode: 'POST',
             paymentInstrument: {
                 type: 'PAY_PAGE'
             }
         };
 
-        // Log orderData before saving
-        console.log("Order data before saving:", { userId, items, address, amount, orderId });
-
         const orderData = {
             userId,
             items,
             address,
             amount,
-            orderId,
             paymentMethod: "PhonePe",
             payment: false,
             date: Date.now()
-        };
+        }
 
-        const newOrder = new orderModel(orderData);
-        await newOrder.save();
+        const newOrder = new orderModel(orderData)
+        await newOrder.save()
         
-        console.log("Order saved successfully:", newOrder);
-
+ 
         const payload = Buffer.from(JSON.stringify(paymentPayload)).toString('base64');
         const keyIndex = 1;
         const string = payload + '/pg/v1/pay' + MERCHANT_KEY;
         const sha256 = crypto.createHash('sha256').update(string).digest('hex');
         const checksum = sha256 + '###' + keyIndex;
-
+ 
         const options = {
             method: 'POST',
             url: MERCHANT_BASE_URL,
@@ -80,10 +68,10 @@ export const createOrder = async (req, res) => {
                 request: payload
             }
         };
-
+ 
         const response = await axios.request(options);
         console.log("Payment URL:", response.data.data.instrumentResponse.redirectInfo.url);
-
+ 
         res.status(200).json({ msg: "OK", url: response.data.data.instrumentResponse.redirectInfo.url });
     } catch (error) {
         console.error("Error in payment:", error);
@@ -96,13 +84,13 @@ export const checkPaymentStatus = async (req, res) => {
     try {
         const merchantTransactionId = req.query.id;
         const keyIndex = 1;
-        const string = `/pg/v1/status/${MERCHANT_ID}/${merchantTransactionId}` + MERCHANT_KEY;
+        const string = /pg/v1/status/${MERCHANT_ID}/${merchantTransactionId} + MERCHANT_KEY;
         const sha256 = crypto.createHash('sha256').update(string).digest('hex');
         const checksum = sha256 + '###' + keyIndex;
  
         const options = {
             method: 'GET',
-            url: `${MERCHANT_STATUS_URL}/${MERCHANT_ID}/${merchantTransactionId}`,
+            url: ${MERCHANT_STATUS_URL}/${MERCHANT_ID}/${merchantTransactionId},
             headers: {
                 accept: 'application/json',
                 'Content-Type': 'application/json',
