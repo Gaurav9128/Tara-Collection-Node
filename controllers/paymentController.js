@@ -6,10 +6,11 @@ import orderModel from '../models/orderModel.js';
 const MERCHANT_KEY = "b4650abc-8e26-4130-ae97-42af3ae2b2ae";
 const MERCHANT_ID = "M22KT8OP23RUM";
  
-const MERCHANT_BASE_URL = "https://api.phonepe.com/apis/hermes/pg/v1/pay";
-const MERCHANT_STATUS_URL = "https://api.phonepe.com/apis/hermes/pg/v1/status/";
+   const MERCHANT_BASE_URL = "https://api.phonepe.com/apis/hermes/pg/v1/pay";
+   const MERCHANT_STATUS_URL = "https://api.phonepe.com/apis/hermes/pg/v1/status/";
+
  
-const redirectUrl = "https://taracollection.in/orders";
+const redirectUrl = "http://localhost:5173/place-order";
 const successUrl = "http://localhost:5173/payment-success";
 const failureUrl = "http://localhost:5173/payment-failure";
  
@@ -28,7 +29,7 @@ export const createOrder = async (req, res) => {
             mobileNumber: mobileNumber,
             amount: amount * 100,
             merchantTransactionId: orderId,
-             redirectUrl: `${redirectUrl}/?id=${orderId}`,
+            redirectUrl: `${redirectUrl}/?id=${orderId}`,
             redirectMode: 'POST',
             paymentInstrument: {
                 type: 'PAY_PAGE'
@@ -83,7 +84,7 @@ export const checkPaymentStatus = async (req, res) => {
     try {
         const merchantTransactionId = req.query.id;
         const keyIndex = 1;
-       const string = `/pg/v1/status/${MERCHANT_ID}/${merchantTransactionId}` + MERCHANT_KEY;
+        const string = `/pg/v1/status/${MERCHANT_ID}/${merchantTransactionId}` + MERCHANT_KEY;
         const sha256 = crypto.createHash('sha256').update(string).digest('hex');
         const checksum = sha256 + '###' + keyIndex;
  
