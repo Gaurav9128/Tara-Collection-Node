@@ -9,7 +9,7 @@ const MERCHANT_KEY = "b4650abc-8e26-4130-ae97-42af3ae2b2ae";
    const MERCHANT_BASE_URL = "https://api.phonepe.com/apis/hermes/pg/v1/pay";
    const MERCHANT_STATUS_URL = "https://api.phonepe.com/apis/hermes/pg/v1/status/";
 
-const redirectUrl = "http://localhost:5173/orders";
+const redirectUrl = "https://taracollection.in/orders";
 const successUrl = "http://localhost:5173/payment-success";
 const failureUrl = "http://localhost:5173/payment-failure";
  
