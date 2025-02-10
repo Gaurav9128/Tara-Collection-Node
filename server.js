@@ -12,7 +12,7 @@ import paymentRouter from './routes/paymentRoute.js';  // Import the payment rou
 
 // App Config
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 4000;
 connectDB();
 connectCloudinary();
 
